@@ -1,0 +1,26 @@
+on: push
+
+name: Benchmark
+
+jobs:
+  benchmark:
+    name: Benchmark
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+      - uses: actions-rs/cargo@v1
+        with:
+          command: install
+          args: cargo-criterion
+      - uses: actions-rs/cargo@v1
+        with:
+          command: criterion
+      - uses: JamesIves/github-pages-deploy-action@4.1.7
+        with:
+          branch: gh-pages
+          folder: target/criterion/reports
